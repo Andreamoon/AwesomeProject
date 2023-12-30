@@ -19,40 +19,39 @@ import {
   TextInput,
   NativeSyntheticEvent,
   TextInputChangeEventData,
+  FlatList,
 } from 'react-native';
+import TodoItem from './components/TodoItem';
+import Header from './components/Header';
 
 function App(): React.JSX.Element {
-  const [name, setName] = useState('ciao');
-  const [age, setAge] = useState(0);
-  function clickHandler() {
-    setName('Andrea');
-  }
-  function onChangeNameHandler(e: NativeSyntheticEvent<TextInputChangeEventData>) {
-    const value = e.nativeEvent.text;
-    setName(value);
-  }
-  function onChangeAgeHandler(e: NativeSyntheticEvent<TextInputChangeEventData>) {
-    const value = e.nativeEvent.text;
-    setAge(value);
-  }
+  const [todos, setTodos] = useState([
+    { text: 'buy coffee', key: '1' },
+    { text: 'create an app', key: '2' },
+    { text: 'play on the switch', key: '3' }
+  ]);
+
+  const pressHandler = (key:string) => {
+    setTodos(prevTodos => {
+      return prevTodos.filter(todo => todo.key != key);
+    });
+  };
+
   return (
     <View style={styles.container}>
-      <Text>Enter name:</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="e.g. Jhon Doe"
-        onChange={onChangeNameHandler}
-      />
-      <Text>enter age</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="e.g. 45"
-        onChange={onChangeAgeHandler}
-      />
-      <Text>
-        name:{name}, age:{age}
-      </Text>
+    <Header />
+    <View style={styles.content}>
+      {/* add todo form */}
+      <View style={styles.list}>
+        <FlatList
+          data={todos}
+          renderItem={({ item }) => (
+            <TodoItem item={item} pressHandler={pressHandler} />
+          )}
+        />
+      </View>
     </View>
+  </View>
   );
 }
 
@@ -60,31 +59,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
-  header: {
-    backgroundColor: 'pink',
-    padding: 20,
+  content: {
+    padding: 40,
   },
-  boldText: {
-    fontWeight: 'bold',
-  },
-  body: {
-    backgroundColor: 'yellow',
-    padding: 20,
-    fontWeight: 'bold',
-  },
-  buttonContainer: {
+  list: {
     marginTop: 20,
   },
-  input: {
-    borderWidth: 1,
-    borderColor: '#777',
-    padding: 8,
-    margin: 10,
-    width: 200,
-  },
 });
-
 export default App;
