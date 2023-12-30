@@ -14,7 +14,6 @@ type Props = {
   };
 };
 export default function TodoItem<T extends Props>({pressHandler, item}: T) {
-    console.log("ciaoa")
   return (
     <TouchableOpacity
       onPress={(event: GestureResponderEvent) => pressHandler(item.key)}>
