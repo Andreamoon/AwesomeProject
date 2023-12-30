@@ -5,9 +5,10 @@
  * @format
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
+  Button,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -15,56 +16,42 @@ import {
   Text,
   useColorScheme,
   View,
+  TextInput,
+  NativeSyntheticEvent,
+  TextInputChangeEventData,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
-
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
+  const [name, setName] = useState('ciao');
+  const [age, setAge] = useState(0);
+  function clickHandler() {
+    setName('Andrea');
+  }
+  function onChangeNameHandler(e: NativeSyntheticEvent<TextInputChangeEventData>) {
+    const value = e.nativeEvent.text;
+    setName(value);
+  }
+  function onChangeAgeHandler(e: NativeSyntheticEvent<TextInputChangeEventData>) {
+    const value = e.nativeEvent.text;
+    setAge(value);
+  }
   return (
     <View style={styles.container}>
-      <Text>Open up App</Text>
+      <Text>Enter name:</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="e.g. Jhon Doe"
+        onChange={onChangeNameHandler}
+      />
+      <Text>enter age</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="e.g. 45"
+        onChange={onChangeAgeHandler}
+      />
+      <Text>
+        name:{name}, age:{age}
+      </Text>
     </View>
   );
 }
@@ -75,6 +62,28 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  header: {
+    backgroundColor: 'pink',
+    padding: 20,
+  },
+  boldText: {
+    fontWeight: 'bold',
+  },
+  body: {
+    backgroundColor: 'yellow',
+    padding: 20,
+    fontWeight: 'bold',
+  },
+  buttonContainer: {
+    marginTop: 20,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#777',
+    padding: 8,
+    margin: 10,
+    width: 200,
   },
 });
 
